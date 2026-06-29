@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UtsavDesign – Creative Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────── */
+    :root {
+      --bg:        #0a0a0a;
+      --surface:   #111111;
+      --card:      #161616;
+      --red:       #CC0000;
+      --red-hot:   #FF1A1A;
+      --red-dim:   #880000;
+      --white:     #f5f5f5;
+      --muted:     #888888;
+      --border:    #222222;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'Inter', sans-serif;
+      --nav-h:     64px;
+      --radius:    4px;
+      --transition: 0.25s ease;
+    }
+
+    /* ─── RESET ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* ─── SCROLLBAR ──────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--red-dim); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+    /* ─── NAV ────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 5vw, 64px);
+      z-index: 1000;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+    .logo-img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border-radius: var(--radius);
+      border: 1px solid var(--red-dim);
+    }
+    .logo-img-fallback {
+      width: 38px; height: 38px;
+      border-radius: var(--radius);
+      background: var(--red);
+      border: 1px solid var(--red);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+    .logo span { color: var(--red); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      position: relative;
+      transition: color var(--transition);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -4px;
+      width: 0; height: 2px;
+      background: var(--red);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--white); }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-burger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--white);
+      border-radius: 1px;
+      transition: var(--transition);
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: rgba(10,10,10,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 24px;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 999;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+    .mobile-menu a:hover { color: var(--white); }
+
+    /* ─── SECTIONS ───────────────────────────────────── */
+    section {
+      min-height: 100vh;
+      padding: calc(var(--nav-h) + 64px) clamp(16px, 5vw, 80px) 80px;
+    }
+
+    /* ─── HERO ───────────────────────────────────────── */
+    #home {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Two-column hero row */
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Right side image frame */
+    .hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-img-frame {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+    }
+    /* Decorative offset border behind the image */
+    .hero-img-frame::before {
+      content: '';
+      position: absolute;
+      top: 16px; left: 16px;
+      right: -16px; bottom: -16px;
+      border: 2px solid var(--red-dim);
+      border-radius: var(--radius);
+      z-index: 0;
+    }
+    /* Corner accent top-left */
+    .hero-img-frame::after {
+      content: '';
+      position: absolute;
+      top: -6px; left: -6px;
+      width: 32px; height: 32px;
+      border-top: 3px solid var(--red);
+      border-left: 3px solid var(--red);
+      z-index: 3;
+    }
+    .hero-img-border {
+      position: relative;
+      z-index: 1;
+      border: 3px solid var(--red);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--card);
+      /* Bottom-right corner accent */
+      box-shadow:
+        6px 6px 0 0 var(--red-dim),
+        0 0 40px rgba(204,0,0,0.15);
+      line-height: 0; /* remove inline gap */
+    }
+    .hero-img-border img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      aspect-ratio: 4 / 5;
+      transition: transform 0.5s ease;
+    }
+    .hero-img-border:hover img { transform: scale(1.03); }
+
+    /* Corner accent bottom-right */
+    .hero-img-border::after {
+      content: '';
+      position: absolute;
+      bottom: -6px; right: -6px;
+      width: 32px; height: 32px;
+      border-bottom: 3px solid var(--red);
+      border-right: 3px solid var(--red);
+      z-index: 4;
+    }
+
+    /* Badge on the image */
+    .hero-img-badge {
+      position: absolute;
+      bottom: 20px;
+      left: -20px;
+      background: var(--red);
+      color: var(--white);
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      z-index: 5;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .hero-img-badge-num {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+    .hero-img-badge-text {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.88;
+    }
+
+    /* Responsive: stack on smaller screens */
+    @media (max-width: 860px) {
+      .hero-row {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .hero-right {
+        order: -1; /* image goes on top on mobile */
+      }
+      .hero-img-frame {
+        max-width: 340px;
+        margin: 0 auto;
+      }
+      .hero-img-border img {
+        aspect-ratio: 1 / 1;
+      }
+      .hero-img-badge {
+        left: 10px;
+        bottom: 10px;
+      }
+    }
+    @media (max-width: 480px) {
+      .hero-img-frame {
+        max-width: 260px;
+      }
+      .hero-img-frame::before {
+        top: 10px; left: 10px;
+        right: -10px; bottom: -10px;
+      }
+    }
+
+    .hero-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 2px;
+      background: var(--red);
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 7vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+    .hero-title .accent { color: var(--red); }
+    .hero-sub {
+      max-width: 460px;
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 40px;
+      line-height: 1.75;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: var(--radius);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+    }
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+    }
+    .btn-primary:hover { background: var(--red-hot); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--red); color: var(--red); }
+
+    /* Hero BG grid */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(204,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(204,0,0,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute;
+      top: 20%; right: 5%;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(204,0,0,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* ─── SECTION HEADER ─────────────────────────────── */
+    .section-header { margin-bottom: 48px; }
+    .section-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 2px;
+      background: var(--red);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+    .section-title .accent { color: var(--red); }
+
+    /* ─── DIVIDER ────────────────────────────────────── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red-dim), transparent);
+      margin: 0;
+    }
+
+    /* ─── DESIGN GALLERY ─────────────────────────────── */
+    #home .gallery-intro {
+      margin-bottom: 56px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .design-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform var(--transition), border-color var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+    .design-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--red-dim);
+    }
+    .design-card:hover .card-overlay { opacity: 1; }
+
+    /* Red-border image frame */
+    .card-img-wrap {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      background: var(--bg);
+      border-bottom: 3px solid var(--red);
+      overflow: hidden;
+    }
+    .card-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 3px solid var(--red);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .design-card:hover .card-img-wrap img { transform: scale(1.04); }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(204,0,0,0.12);
+      opacity: 0;
+      transition: opacity var(--transition);
+      z-index: 3;
+    }
+
+    .card-body {
+      padding: 16px 18px 20px;
+    }
+    .card-category {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── ABOUT ──────────────────────────────────────── */
+    #about {
+      background: var(--surface);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      font-size: 0.96rem;
+      line-height: 1.8;
+    }
+    .about-text p strong { color: var(--white); }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .stat-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--red);
+      padding: 20px;
+      border-radius: var(--radius);
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      color: var(--red);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 6px;
+    }
+    .about-skills-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .skill-tag {
+      padding: 6px 16px;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      transition: var(--transition);
+    }
+    .skill-tag:hover {
+      border-color: var(--red);
+      color: var(--white);
+    }
+    .about-quote {
+      margin-top: 32px;
+      padding: 24px;
+      border-left: 3px solid var(--red);
+      background: var(--card);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .about-quote blockquote {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.7;
+    }
+    .about-quote cite {
+      display: block;
+      margin-top: 12px;
+      font-size: 0.76rem;
+      color: var(--red);
+      font-style: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── CONTACT ────────────────────────────────────── */
+    #contact {
+      background: var(--bg);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+    }
+    .contact-info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .contact-intro {
+      font-size: 0.96rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 380px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .contact-icon {
+      width: 42px; height: 42px;
+      flex-shrink: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--red);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .contact-icon svg { width: 18px; height: 18px; stroke: var(--red); }
+    .contact-item-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .contact-item-value {
+      font-size: 0.95rem;
+      color: var(--white);
+      font-weight: 500;
+    }
+    .contact-item-value a {
+      color: var(--white);
+      transition: color var(--transition);
+    }
+    .contact-item-value a:hover { color: var(--red); }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--red);
+      border-radius: var(--radius);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-self: start;
+    }
+    .contact-card-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.04em;
+    }
+    .contact-card-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .contact-availability {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .dot-green {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e88;
+    }
+    .social-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .social-link {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .social-link:hover {
+      border-color: var(--red);
+      color: var(--white);
+    }
+
+    /* ─── ADDRESS ─────────────────────────────────────── */
+    #address {
+      background: var(--surface);
+    }
+    .address-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .address-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .address-map-placeholder {
+      height: 260px;
+      background: var(--bg);
+      border-bottom: 3px solid var(--red);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Decorative map grid */
+    .address-map-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(204,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(204,0,0,0.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .map-pin {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .map-pin-icon {
+      width: 40px; height: 40px;
+      background: var(--red);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .map-pin-icon::after {
+      content: '';
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--bg);
+      transform: rotate(45deg);
+    }
+    .map-pin-label {
+      background: rgba(10,10,10,0.85);
+      border: 1px solid var(--red-dim);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      color: var(--white);
+      letter-spacing: 0.06em;
+    }
+    .address-detail {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .address-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .address-row-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--red);
+      min-width: 80px;
+      padding-top: 2px;
+    }
+    .address-row-value {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .address-info {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .address-info p {
+      font-size: 0.94rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .address-flag {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+    .address-flag span { color: var(--red); }
+    .address-note {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      padding: 18px 20px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 32px clamp(16px, 5vw, 80px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: 0.06em;
+    }
+    .footer-brand span { color: var(--red); }
+    .footer-copy {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+    .footer-copy a { color: var(--red); }
+
+    /* ─── LIGHTBOX ───────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.92);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      max-width: 900px;
+      width: 100%;
+      position: relative;
+    }
+    .lightbox-img {
+      width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border: 3px solid var(--red);
+      background: var(--bg);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -16px; right: -16px;
+      width: 36px; height: 36px;
+      background: var(--red);
+      border: none;
+      border-radius: 50%;
+      color: var(--white);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      transition: background var(--transition);
+      z-index: 1;
+    }
+    .lightbox-close:hover { background: var(--red-hot); }
+    .lightbox-caption {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      .about-grid,
+      .contact-grid,
+      .address-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      section { padding: calc(var(--nav-h) + 40px) 16px 60px; }
+      .contact-card { padding: 24px; }
+    }
+    @media (max-width: 400px) {
+      .about-stats { grid-template-columns: 1fr; }
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim { opacity: 0; }
+    .anim.in { animation: fadeUp 0.5s ease forwards; }
+
+    /* Stagger children */
+    .gallery-grid .design-card { opacity: 0; }
+    .gallery-grid.in .design-card {
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .gallery-grid.in .design-card:nth-child(1) { animation-delay: 0s; }
+    .gallery-grid.in .design-card:nth-child(2) { animation-delay: 0.07s; }
+    .gallery-grid.in .design-card:nth-child(3) { animation-delay: 0.14s; }
+    .gallery-grid.in .design-card:nth-child(4) { animation-delay: 0.21s; }
+    .gallery-grid.in .design-card:nth-child(5) { animation-delay: 0.28s; }
+    .gallery-grid.in .design-card:nth-child(6) { animation-delay: 0.35s; }
+    .gallery-grid.in .design-card:nth-child(n+7) { animation-delay: 0.42s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .anim, .gallery-grid .design-card { opacity: 1; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ NAV -->
+<nav>
+  <a href="#home" class="logo" aria-label="UtsavDesign Home">
+    <!-- LOGO: Replace the src URL below with your own logo URL -->
+    <img
+      class="logo-img"
+      id="logoImg"
+      src="https://placehold.co/38x38/CC0000/ffffff?text=U"
+      alt="UtsavDesign Logo"
+      onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';"
+    />
+    <div class="logo-img-fallback" id="logoFallback" style="display:none;">U</div>
+    Utsav<span>Design</span>
+  </a>
+
+  <ul class="nav-links" role="list">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#about">About Me</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#address">Address</a></li>
+  </ul>
+
+  <div class="nav-burger" id="burger" aria-label="Open menu" tabindex="0" role="button">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home">Home</a>
+  <a href="#about">About Me</a>
+  <a href="#contact">Contact Me</a>
+  <a href="#address">Address</a>
+</div>
+
+<!-- ═══════════════════════════════════════════ HOME -->
+<section id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <!-- TWO-COLUMN HERO -->
+  <div class="hero-row">
+    <!-- LEFT: Text -->
+    <div class="hero-left">
+      <div class="hero-tag anim">Creative Portfolio</div>
+      <h1 class="hero-title anim">
+        Bold<br/><span class="accent">Designs</span><br/>Speak.
+      </h1>
+      <p class="hero-sub anim">
+        T-shirts, logos, posters &amp; more — handcrafted with 6 years of passion
+        by Utsav Bhandari, based in Nepal.
+      </p>
+      <div class="hero-ctas anim">
+        <a href="#about" class="btn btn-primary">About Me</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </div>
+    <!-- RIGHT: Hero Image with red border -->
+    <div class="hero-right anim">
+      <div class="hero-img-frame">
+        <div class="hero-img-border">
+          <img
+            id="heroImg"
+            src="https://placehold.co/460x575/111111/CC0000?text=Your+Photo+Here"
+            alt="Utsav Bhandari - Graphic Designer"
+            onerror="this.src='https://placehold.co/460x575/111111/CC0000?text=Image+Not+Found'"
+          />
+        </div>
+        <div class="hero-img-badge">
+          <div class="hero-img-badge-num">6+</div>
+          <div class="hero-img-badge-text">Years of Design</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end .hero-row -->
+
+  <!-- GALLERY -->
+  <div class="gallery-intro" style="margin-top:80px;">
+    <div class="section-header">
+      <div class="section-eyebrow">Portfolio</div>
+      <h2 class="section-title">My <span class="accent">Designs</span></h2>
+    </div>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+    <!-- Cards injected by JS from DESIGNS array below -->
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ ABOUT -->
+<section id="about">
+  <div class="section-header anim">
+    <div class="section-eyebrow">Who I Am</div>
+    <h2 class="section-title">About <span class="accent">Me</span></h2>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-text anim">
+      <p>
+        Hi, I'm <strong>Utsav Bhandari</strong> — a graphic designer and visual artist from
+        the hills of Sindhuli, Nepal. I discovered my love for design when I was just
+        <strong>16 years old</strong>, and what started as curiosity quickly grew into a calling.
+        At 21, I bring over <strong>6 years of hands-on experience</strong> to every project I touch.
+      </p>
+      <p>
+        My journey began in my hometown, where I started designing logos, posters, and branding
+        materials for small local businesses — shops, general stores, and restaurants that needed
+        a professional visual identity without the big-city price tag. Seeing my work bring their
+        businesses to life, and getting paid for something I love, was the fuel that kept me going.
+      </p>
+      <p>
+        Today I specialize in <strong>t-shirt graphic design, logo creation, poster design,
+        and brand identity</strong>. My style blends bold typography with strong visual hierarchy —
+        designs that communicate instantly and stay memorable long after first glance.
+      </p>
+      <p>
+        I'm proud of every design I've created because each one carries a piece of someone's
+        dream — and my craft. Whether you're a startup, a local business, or just someone
+        with a creative idea, I'm here to bring it to life visually.
+      </p>
+
+      <div class="about-stats">
+        <div class="stat-box">
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">30+</div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Passion Driven</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="anim">
+      <div class="about-skills-title">Skills &amp; Expertise</div>
+      <div class="skill-tags">
+        <span class="skill-tag">T-Shirt Design</span>
+        <span class="skill-tag">Logo Design</span>
+        <span class="skill-tag">Poster Design</span>
+        <span class="skill-tag">Brand Identity</span>
+        <span class="skill-tag">Typography</span>
+        <span class="skill-tag">Color Theory</span>
+        <span class="skill-tag">Print Design</span>
+        <span class="skill-tag">Illustrator</span>
+        <span class="skill-tag">Photoshop</span>
+        <span class="skill-tag">Visual Branding</span>
+      </div>
+
+      <div class="about-quote">
+        <blockquote>
+          "Design is not just what it looks like and feels like. Design is how it works —
+          and I make sure it works beautifully for every client, every time."
+        </blockquote>
+        <cite>— Utsav Bhandari</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ CONTACT -->
+<section id="contact">
+  <div class="section-header anim">
+    <div class="section-eyebrow">Let's Talk</div>
+    <h2 class="section-title">Contact <span class="accent">Me</span></h2>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-info-block anim">
+      <p class="contact-intro">
+        Have a project in mind? Want a logo, poster, or t-shirt design for your brand?
+        I'd love to hear from you. Reach out and let's create something great together.
+      </p>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">
+            <a href="mailto:utsavbhandari667@gmail.com">utsavbhandari667@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.79a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-item-label">Phone / WhatsApp</div>
+          <div class="contact-item-value">
+            <a href="tel:+9779762670851">+977 9762670851</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-item-label">Response Time</div>
+          <div class="contact-item-value">Usually within 24 hours</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card anim">
+      <div class="contact-card-title">Open for Work</div>
+      <div class="contact-availability">
+        <span class="dot-green"></span>
+        <span>Currently available for freelance projects</span>
+      </div>
+      <p class="contact-card-body">
+        Whether you need a logo, a t-shirt design, a business poster, or full brand identity —
+        I take on projects of all sizes. Based in Nepal, I work with clients locally and
+        online worldwide.
+      </p>
+      <div style="border-top: 1px solid var(--border); padding-top: 20px;">
+        <div class="contact-item-label" style="margin-bottom:12px;">Connect With Me</div>
+        <div class="social-links">
+          <a class="social-link" href="mailto:utsavbhandari667@gmail.com">Gmail</a>
+          <a class="social-link" href="https://wa.me/9779762670851" target="_blank">WhatsApp</a>
+        </div>
+      </div>
+      <a href="mailto:utsavbhandari667@gmail.com" class="btn btn-primary" style="align-self:flex-start;">
+        Send a Message →
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════ ADDRESS -->
+<section id="address">
+  <div class="section-header anim">
+    <div class="section-eyebrow">Location</div>
+    <h2 class="section-title">My <span class="accent">Address</span></h2>
+  </div>
+
+  <div class="address-grid">
+    <div class="address-info anim">
+      <div class="address-flag">NEPAL <span>🇳🇵</span></div>
+      <p>
+        I'm based in the beautiful Sindhuli District of Nepal — a region known for its
+        scenic mountains, rich culture, and hardworking community. I grew up here and it's where
+        my design journey began, serving local businesses and building my craft from the ground up.
+      </p>
+      <p>
+        While I'm rooted in my hometown, I work with clients across Nepal and take online
+        projects from anywhere in the world. Distance is never a barrier when you have a
+        great design idea.
+      </p>
+      <div class="address-note">
+        📍 For in-person meetings or local project discussions, feel free to contact me first
+        via phone or email to schedule a time.
+      </div>
+    </div>
+
+    <div class="address-card anim">
+      <div class="address-map-placeholder">
+        <div class="map-pin">
+          <div class="map-pin-icon"></div>
+          <div class="map-pin-label">Sindhuli, Nepal</div>
+        </div>
+      </div>
+      <div class="address-detail">
+        <div class="address-row">
+          <div class="address-row-label">Country</div>
+          <div class="address-row-value">Nepal</div>
+        </div>
+        <div class="address-row">
+          <div class="address-row-label">District</div>
+          <div class="address-row-value">Sindhuli District</div>
+        </div>
+        <div class="address-row">
+          <div class="address-row-label">Municipality</div>
+          <div class="address-row-value">Dudhauli Municipality</div>
+        </div>
+        <div class="address-row">
+          <div class="address-row-label">Ward</div>
+          <div class="address-row-value">Ward No. 1, Range Tol</div>
+        </div>
+        <div class="address-row">
+          <div class="address-row-label">Phone</div>
+          <div class="address-row-value"><a href="tel:+9779762670851" style="color:var(--red);">+977 9762670851</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ FOOTER -->
+<footer>
+  <div class="footer-brand">Utsav<span>Design</span></div>
+  <div class="footer-copy">
+    © 2025 UtsavDesign · Sindhuli, Nepal ·
+    <a href="mailto:utsavbhandari667@gmail.com">utsavbhandari667@gmail.com</a>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════ LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Design Preview">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+
+<script>
+  /* ══════════════════════════════════════════════════════
+   *  ✏️  CONFIGURATION — Edit This Section Only
+   * ══════════════════════════════════════════════════════
+   *
+   *  LOGO: Replace the URL below with any image URL.
+   *  DESIGNS: Add/remove/update design entries freely.
+   *    - url      : direct link to your image (Google Drive, Imgur, GitHub raw, etc.)
+   *    - title    : design title shown on the card
+   *    - category : tag shown in red (e.g. "T-Shirt", "Logo", "Poster")
+   *    - desc     : short description for the card
+   *
+   *  ➡️  To ADD a design: copy one object block, paste it,
+   *       update the values. That's it. No other code changes needed.
+   *  ➡️  To REMOVE a design: delete the object block.
+   *  ➡️  To UPDATE: change the URL or text fields.
+   * ══════════════════════════════════════════════════════ */
+
+  const LOGO_URL = "https://placehold.co/38x38/CC0000/ffffff?text=U";
+  // ↑ Replace with your logo URL e.g.:
+  // const LOGO_URL = "https://raw.githubusercontent.com/yourname/repo/main/logo.png";
+
+  const HERO_IMAGE_URL = "https://i.postimg.cc/SRJTqhYJ/IMG-2026-02-22-16-30-34-044.jpg";
+  // ↑ Replace with your own photo URL — any size works, it will fit perfectly inside the red border.
+  // Example: const HERO_IMAGE_URL = "https://raw.githubusercontent.com/yourname/repo/main/photo.jpg";
+
+  const DESIGNS = [
+    {
+      url: "https://placehold.co/600x600/111111/CC0000?text=T-Shirt+Design+1",
+      title: "Street Fire Tee",
+      category: "T-Shirt Design",
+      desc: "Bold flame graphic with minimalist typography. Perfect for streetwear drops."
+    },
+    {
+      url: "https://placehold.co/600x600/111111/CC0000?text=Logo+Design+1",
+      title: "Mountain Brew Co.",
+      category: "Logo Design",
+      desc: "Modern logo designed for a local coffee shop. Clean, minimal, memorable."
+    },
+    {
+      url: "https://placehold.co/600x600/111111/CC0000?text=Poster+Design+1",
+      title: "Dashain Festival Poster",
+      category: "Poster Design",
+      desc: "Vibrant festival poster blending traditional motifs with modern layout."
+    },
+    {
+      url: "https://placehold.co/600x600/111111/CC0000?text=T-Shirt+Design+2",
+      title: "Nature Warrior Tee",
+      category: "T-Shirt Design",
+      desc: "Nepal-inspired mountain and eagle graphic. Premium graphic tee design."
+    },
+    {
+      url: "https://placehold.co/600x600/111111/CC0000?text=Logo+Design+2",
+      title: "General Store Branding",
+      category: "Logo Design",
+      desc: "Trustworthy logo for a family-run general store in Sindhuli."
+    },
+    {
+      url: "https://placehold.co/600x600/111111/CC0000?text=Business+Card",
+      title: "Restaurant Identity",
+      category: "Brand Identity",
+      desc: "Complete visual identity for a local Nepali restaurant — logo, menu, signage."
+    },
+    {
+      url: "https://placehold.co/600x600/111111/CC0000?text=Business+Card",
+      title: "Restaurant Identity",
+      category: "Brand Identity",
+      desc: "Complete visual identity for a local Nepali restaurant — logo, menu, signage."
+    },
+ {
+      url: "https://placehold.co/600x600/111111/CC0000?text=Business+Card",
+      title: "Restaurant Identity",
+      category: "Brand Identity",
+      desc: "Complete visual identity for a local Nepali restaurant — logo, menu, signage."
+    },
+ {
+      url: "https://placehold.co/600x600/111111/CC0000?text=Business+Card",
+      title: "Restaurant Identity",
+      category: "Brand Identity",
+      desc: "Complete visual identity for a local Nepali restaurant — logo, menu, signage."
+    },
+ {
+      url: "https://placehold.co/600x600/111111/CC0000?text=Business+Card",
+      title: "Restaurant Identity",
+      category: "Brand Identity",
+      desc: "Complete visual identity for a local Nepali restaurant — logo, menu, signage."
+    },
+  ];
+
+  /* ══════════════════════════════════════════════════════
+   *  ⚙️  ENGINE — Do not edit below unless you know JS
+   * ══════════════════════════════════════════════════════ */
+
+  // Apply logo
+  const logoImg = document.getElementById('logoImg');
+  if (LOGO_URL) logoImg.src = LOGO_URL;
+
+  // Apply hero image
+  const heroImg = document.getElementById('heroImg');
+  if (HERO_IMAGE_URL) heroImg.src = HERO_IMAGE_URL;
+
+  // Build gallery
+  const grid = document.getElementById('galleryGrid');
+  DESIGNS.forEach((d, i) => {
+    const card = document.createElement('div');
+    card.className = 'design-card';
+    card.setAttribute('data-index', i);
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', `View ${d.title}`);
+    card.innerHTML = `
+      <div class="card-img-wrap">
+        <img src="${d.url}" alt="${d.title}" loading="lazy"
+          onerror="this.src='https://placehold.co/600x600/111111/CC0000?text=Image+Not+Found'" />
+        <div class="card-overlay"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">${d.category}</div>
+        <div class="card-title">${d.title}</div>
+        <div class="card-desc">${d.desc}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => openLightbox(i));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openLightbox(i); });
+    grid.appendChild(card);
+  });
+
+  // Lightbox
+  const lightbox   = document.getElementById('lightbox');
+  const lbImg      = document.getElementById('lightboxImg');
+  const lbCaption  = document.getElementById('lightboxCaption');
+  const lbClose    = document.getElementById('lightboxClose');
+
+  function openLightbox(i) {
+    const d = DESIGNS[i];
+    lbImg.src = d.url;
+    lbImg.alt = d.title;
+    lbCaption.textContent = `${d.title} — ${d.category}`;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Mobile nav
+  const burger     = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      burger.classList.remove('open');
+    });
+  });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Scroll animations
+  const animEls = document.querySelectorAll('.anim');
+  const animObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        animObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  animEls.forEach(el => animObserver.observe(el));
+
+  // Gallery stagger
+  const galleryObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        galleryObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  galleryObserver.observe(grid);
+</script>
+</body>
+</html>
